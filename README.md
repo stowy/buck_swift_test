@@ -3,10 +3,10 @@
 - Install buck from master at HEAD
 - Ensure watchman is installed
 - Run the following commands:
-  - buck build :MainBundle
-  - buck test swift_test:TestBundle
-  - buck build :MainBundle
-  - buck test swift_test:TestBundle
+  - `buck build :MainBundle`
+  - `buck test swift_test:TestBundle`
+  - `buck build :MainBundle`
+  - `buck test swift_test:TestBundle`
 
 - This should result in a failure:
 
