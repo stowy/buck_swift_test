@@ -10,6 +10,7 @@
 
 - This should result in a failure:
 
+```
 [-] PROCESSING BUCK FILES...FINISHED 0.4s
 [+] DOWNLOADING... (0.00 B/S, TOTAL: 0.00 B, 0 Artifacts)
 [+] BUILDING...0.0s
@@ -52,3 +53,4 @@ java.lang.StackOverflowError
 	at com.facebook.buck.rules.BuildRuleResolver.requireRule(BuildRuleResolver.java:136)
 	at com.facebook.buck.rules.BuildRuleResolver.requireAllRules(BuildRuleResolver.java:152)
 	at com.facebook.buck.rules.DefaultTargetNodeToBuildRuleTransformer.transform(DefaultTargetNodeToBuildRuleTransformer.java:44)
+```
