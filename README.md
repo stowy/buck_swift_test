@@ -2,6 +2,7 @@
 
 - Install buck from master at HEAD
 - Ensure watchman is installed
+- Check out this repo, on the branch 'test' 
 - Run the following commands:
   - `buck build :MainBundle`
   - `buck test swift_test:TestBundle`
