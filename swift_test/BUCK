@@ -1,5 +1,6 @@
 swift_library(
   name = 'dep1',
+  visibility = ['PUBLIC'],
   srcs = ['dep1/echo.swift']
 )
 
@@ -17,6 +18,7 @@ apple_bundle(
     name='TestBundle',
     binary=':TestApp',
     extension='app',
+    tests = [':MixedTest'],
     info_plist='swift_test/Info.plist',
     info_plist_substitutions={
         'PRODUCT_BUNDLE_IDENTIFIER': 'com.uber.swifttest'
@@ -36,5 +38,3 @@ apple_test(
       '$PLATFORM_DIR/Developer/Library/Frameworks/XCTest.framework'
   ],
 )
-
-

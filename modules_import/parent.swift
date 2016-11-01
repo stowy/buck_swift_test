@@ -1,4 +1,4 @@
-import ModuleOne
+import one
 
 public class Parent {
   public class func printOne() {

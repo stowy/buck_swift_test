@@ -8,6 +8,7 @@ swift_library(
 
 swift_library(
   name = 'parent1',
+  visibility = ['PUBLIC'],
   srcs = glob([
     'parent1/parent1.swift'
   ]),

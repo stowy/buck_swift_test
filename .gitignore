@@ -1,0 +1,15 @@
+# Mac OS X
+**DS_Store
+
+# Xcode
+*.mode1v3
+*.pbxuser
+*.xccheckout
+*.moved-aside
+*.mode2v3
+xcuserdata
+*.perspectivev3
+
+# Buck
+.buckd
+buck-out

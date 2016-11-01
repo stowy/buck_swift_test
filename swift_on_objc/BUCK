@@ -7,6 +7,7 @@ apple_library(
 
 swift_library(
   name = 'dep2',
+  visibility = ['PUBLIC'],
   srcs = [
     'Test2.swift',
   ],

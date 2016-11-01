@@ -5,12 +5,13 @@ swift_library(
 
 apple_binary(
     name = 'parent',
-    srcs = [ 'parent/main.swift' ], 
+    srcs = [ 'parent/main.swift' ],
     deps = [ ':dep1' ]
 )
 
 swift_library(
     name = 'libparent',
+    visibility = ['PUBLIC'],
     srcs = [ 'libparent/libparent.swift' ],
     deps = [ ':dep1' ]
 )

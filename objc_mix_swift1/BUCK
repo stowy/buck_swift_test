@@ -1,5 +1,6 @@
 swift_library(
   name = 'dep1',
+  visibility = ['PUBLIC'],
   srcs = [
     'App1/Test2.swift',
     'App1/Test3.swift',
