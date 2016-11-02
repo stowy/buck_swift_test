@@ -1,5 +1,7 @@
 ### Test app to test buck build stability
 
+#### UPDATE - This does not occur when not using watchman
+
 - Install buck from master at HEAD
 - Ensure watchman is installed
 - Check out this repo, on the branch 'test' 
@@ -8,6 +10,7 @@
   - `buck test swift_test:TestBundle`
   - `buck build :MainBundle`
   - `buck test swift_test:TestBundle`
+
 
 - This should result in a failure:
 
