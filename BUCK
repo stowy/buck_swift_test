@@ -3,17 +3,16 @@ apple_binary(
   headers= [
       'MainApp/AppDelegate.h'
   ],
-  srcs = [
+  srcs = glob([
       'MainApp/AppDelegate.m',
       'MainApp/main.m',
-      'MainApp/Test1.swift',
-  ],
+      'MainApp/*.swift',
+  ]),
   deps = [
-    '//objc_mix_swift1:dep1',
-    '//swift_incremental:parent1',
-    '//swift_on_objc:dep2',
-    '//swift_on_swift:libparent',
-    # '//modules_import:parent'
+    '//MixedDependencyTests/ObjcDependency1:ObjcDependency1',
+    '//MixedDependencyTests/MixedDependency1:MixedDependency1',
+    '//MixedDependencyTests/MixedDependency2:MixedDependency2',
+    '//MixedDependencyTests/MixedDependency3:MixedDependency3',
   ],
   frameworks = [
     '$SDKROOT/System/Library/Frameworks/UIKit.framework',

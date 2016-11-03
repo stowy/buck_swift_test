@@ -1,7 +1,12 @@
 #import "AppDelegate.h"
 #import <MainBinary-Swift.h>
 #import <UIKit/UIKit.h>
-// @import dep1;
+
+
+#import "ObjcDependency1/ObjcDep1.h"
+#import "MixedDependency1/MixedDep1.h"
+#import "MixedDependency2/MixedDep2.h"
+#import "MixedDependency3/MixedDep3.h"
 
 @interface AppDelegate ()
 
