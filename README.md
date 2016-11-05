@@ -1,60 +1,72 @@
-### Test app to test buck build stability
+### Test modules functionality with Interop
 
-#### UPDATE - This does not occur when not using watchman
+This branch must be tested against the branch referenced in [this PR](https://github.com/facebook/buck/pull/983) - [found here](https://github.com/nguyentruongtho/buck/tree/tho/import_modules)
 
-- Install buck from master at HEAD
-- Ensure watchman is installed
-- Check out this repo, on the branch 'test' 
-- Run the following commands:
-  - `buck build :MainBundle`
-  - `buck test swift_test:TestBundle`
-  - `buck build :MainBundle`
-  - `buck test swift_test:TestBundle`
+To test, run `buck test MixedDependencyTests/MixedDependency1`
 
+This will run the tests found below.
 
-- This should result in a failure:
+### Results
+- testSwift() tests a swift class in the newly created `MixedDependency1` module. This works as expected. 
+- testBridgingHeader() tests an objc class included in the bridging header for the same module. This also works.
+- testModule() tests an objc class from the same module, that is not included in the bridging header. This fails.
+
+- unable to build and @import MixedDependency1 in objC tests file `DummyTest.m` to access swift class 'Foo' in ObjC
+- additionally, if we enable the `-fmodules` cxx flag in the buck config, we get the following errors:
 
 ```
-[-] PROCESSING BUCK FILES...FINISHED 0.4s
-[+] DOWNLOADING... (0.00 B/S, TOTAL: 0.00 B, 0 Artifacts)
-[+] BUILDING...0.0s
-[2016-11-01 13:37:22.432][error][command:null][tid:150][com.facebook.buck.cli.Main] Uncaught exception at top level
-java.lang.StackOverflowError
-	at sun.reflect.generics.parser.SignatureParser.parsePackageNameAndSimpleClassTypeSignature(SignatureParser.java:328)
-	at sun.reflect.generics.parser.SignatureParser.parseClassTypeSignature(SignatureParser.java:310)
-	at sun.reflect.generics.parser.SignatureParser.parseFieldTypeSignature(SignatureParser.java:289)
-	at sun.reflect.generics.parser.SignatureParser.parseFieldTypeSignature(SignatureParser.java:283)
-	at sun.reflect.generics.parser.SignatureParser.parseTypeArgument(SignatureParser.java:436)
-	at sun.reflect.generics.parser.SignatureParser.parseTypeArguments(SignatureParser.java:399)
-	at sun.reflect.generics.parser.SignatureParser.parsePackageNameAndSimpleClassTypeSignature(SignatureParser.java:346)
-	at sun.reflect.generics.parser.SignatureParser.parseClassTypeSignature(SignatureParser.java:310)
-	at sun.reflect.generics.parser.SignatureParser.parseFieldTypeSignature(SignatureParser.java:289)
-	at sun.reflect.generics.parser.SignatureParser.parseFieldTypeSignature(SignatureParser.java:283)
-	at sun.reflect.generics.parser.SignatureParser.parseTypeSignature(SignatureParser.java:485)
-	at sun.reflect.generics.parser.SignatureParser.parseTypeSig(SignatureParser.java:188)
-	at sun.reflect.generics.repository.FieldRepository.parse(FieldRepository.java:52)
-	at sun.reflect.generics.repository.FieldRepository.parse(FieldRepository.java:42)
-	at sun.reflect.generics.repository.AbstractRepository.<init>(AbstractRepository.java:74)
-	at sun.reflect.generics.repository.FieldRepository.<init>(FieldRepository.java:48)
-	at sun.reflect.generics.repository.FieldRepository.make(FieldRepository.java:66)
-	at java.lang.reflect.Field.getGenericInfo(Field.java:105)
-	at java.lang.reflect.Field.getGenericType(Field.java:247)
-	at com.facebook.buck.rules.ParamInfo.<init>(ParamInfo.java:87)
-	at com.facebook.buck.rules.TargetNodeFactory.create(TargetNodeFactory.java:83)
-	at com.facebook.buck.rules.TargetNodeFactory.copyNodeWithFlavors(TargetNodeFactory.java:178)
-	at com.facebook.buck.rules.TargetNode.withFlavors(TargetNode.java:196)
-	at com.facebook.buck.rules.TargetGraph.getInternal(TargetGraph.java:87)
-	at com.facebook.buck.rules.TargetGraph.get(TargetGraph.java:97)
-	at com.facebook.buck.rules.BuildRuleResolver.requireRule(BuildRuleResolver.java:135)
-	at com.facebook.buck.rules.BuildRuleResolver.requireAllRules(BuildRuleResolver.java:152)
-	at com.facebook.buck.rules.DefaultTargetNodeToBuildRuleTransformer.transform(DefaultTargetNodeToBuildRuleTransformer.java:44)
-	at com.facebook.buck.rules.BuildRuleResolver.requireRule(BuildRuleResolver.java:136)
-	at com.facebook.buck.rules.BuildRuleResolver.requireAllRules(BuildRuleResolver.java:152)
-	at com.facebook.buck.rules.DefaultTargetNodeToBuildRuleTransformer.transform(DefaultTargetNodeToBuildRuleTransformer.java:44)
-	at com.facebook.buck.rules.BuildRuleResolver.requireRule(BuildRuleResolver.java:136)
-	at com.facebook.buck.rules.BuildRuleResolver.requireAllRules(BuildRuleResolver.java:152)
-	at com.facebook.buck.rules.DefaultTargetNodeToBuildRuleTransformer.transform(DefaultTargetNodeToBuildRuleTransformer.java:44)
-	at com.facebook.buck.rules.BuildRuleResolver.requireRule(BuildRuleResolver.java:136)
-	at com.facebook.buck.rules.BuildRuleResolver.requireAllRules(BuildRuleResolver.java:152)
-	at com.facebook.buck.rules.DefaultTargetNodeToBuildRuleTransformer.transform(DefaultTargetNodeToBuildRuleTransformer.java:44)
+$ ubuck test MixedDependencyTests/MixedDependency1
+Not using buckd because watchman isn't installed.
+MixedDependencyTests/MixedDependency1/Tests/DummyTest.m:17:9: fatal error: module 'XCTest' not found
+@import XCTest; /* clang -E: implicit import for "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks/XCTest.framework/Headers/XCTest.h" */
+ ~~~~~~~^~~~~~
+1 error generated.
+
+In file included from MixedDependencyTests/MixedDependency1/Classes/MD1TestClass.m:1:
+MixedDependencyTests/MixedDependency1/Classes/MD1TestClass.h:1:9: fatal error: module 'Foundation' not found
+@import Foundation; /* clang -E: implicit import for "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h" */
+ ~~~~~~~^~~~~~~~~~
+1 error generated.
+
+In file included from MixedDependencyTests/MixedDependency1/Classes/MD1TestClass2.m:1:
+MixedDependencyTests/MixedDependency1/Classes/MD1TestClass2.h:1:9: fatal error: module 'Foundation' not found
+@import Foundation; /* clang -E: implicit import for "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h" */
+ ~~~~~~~^~~~~~~~~~
+1 error generated.
+
+BUILD FAILED: //MixedDependencyTests/MixedDependency1:Tests#compile-pic-DummyTest.m.of01d5cbf,iphonesimulator-x86_64 failed with exit code 1:
+objective-c-cpp-output compile
+```
+
+
+Tests for reference.
+
+```objc
+import XCTest
+import MixedDependency1 
+
+class test_withInterop: XCTestCase {
+  func testEcho() {
+    XCTAssertEqual("echo", "echo", "Pass")
+  }
+
+  func testAnswer() {
+    XCTAssertEqual(MD1TestClass2.answer(), "MD1TestClass2");
+  }
+
+  func testSwift() {
+    let foo = Foo()
+    XCTAssertNotNil(foo)
+  }
+
+  func testBridgingHeader() {
+    let test2 = MD1TestClass2()
+    XCTAssertNotNil(test2)
+  }
+
+  func testModule() {
+    let test = MD1TestClass()
+    XCTAssertNotNil(test)
+  }
+}
 ```
