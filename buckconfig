@@ -1,10 +1,9 @@
 [cxx]
   default_platform = iphonesimulator-x86_64
-  cflags = -g -fobjc-arc
+  cflags = -g -std=c11 -fmodules -fobjc-arc -D BUCK
+  combined_preprocess_and_compile = true
 
 [apple]
-  default_debug_info_format_for_binaries = NONE
-  default_debug_info_format_for_libraries = NONE
   xctool_default_destination_specifier = platform=iOS Simulator,OS=latest
   xctool_path = xctool/bin/xctool
 

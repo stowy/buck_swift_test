@@ -4,9 +4,9 @@
 
 
 #import "ObjcDependency1/ObjcDep1.h"
-#import "MixedDependency1/MixedDep1.h"
-#import "MixedDependency2/MixedDep2.h"
-#import "MixedDependency3/MixedDep3.h"
+#import <MixedDependency1/MD1TestClass.h>
+#import <MixedDependency2/MixedDep2.h>
+#import <MixedDependency3/MixedDep3.h>
 
 @interface AppDelegate ()
 
