@@ -7,11 +7,24 @@ To test, run `buck test MixedDependencyTests/MixedDependency1`
 This will run the tests found below.
 
 ### Results
-- testSwift() tests a swift class in the newly created `MixedDependency1` module. This works as expected. 
-- testBridgingHeader() tests an objc class included in the bridging header for the same module. This also works.
-- testModule() tests an objc class from the same module, that is not included in the bridging header. This fails.
+- `testSwift()` tests a swift class in the newly created `MixedDependency1` module. This works as expected. 
+- `testBridgingHeader()` tests an objc class included in the bridging header for the same module. This also works.
+- `testModule()` tests an objc class from the same module, that is not included in the bridging header. This fails with:
 
-- unable to build and @import MixedDependency1 in objC tests file `DummyTest.m` to access swift class 'Foo' in ObjC
+```
+MixedDependencyTests/MixedDependency1/Tests/test_withInterop.swift:40:16: error: use of unresolved identifier 'MD1TestClass'
+    let test = MD1TestClass()
+               ^~~~~~~~~~~~
+__ObjC.MD1TestClass2:1:12: note: did you mean 'MD1TestClass2'?
+open class MD1TestClass2 : NSObject {
+           ^
+
+
+BUILD FAILED: //MixedDependencyTests/MixedDependency1:Tests#dwarf,iphonesimulator-x86_64,mach-o-bundle,swift-compile failed with exit code 1:
+swift compile
+```
+
+- unable to build and `@import MixedDependency1;` in objC tests file `DummyTest.m` to access swift class `Foo` in ObjC
 - additionally, if we enable the `-fmodules` cxx flag in the buck config, we get the following errors:
 
 ```
