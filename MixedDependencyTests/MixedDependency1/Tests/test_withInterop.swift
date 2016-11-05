@@ -15,6 +15,7 @@
  */
 
 import XCTest
+import MixedDependency1 
 
 class test_withInterop: XCTestCase {
   func testEcho() {
@@ -23,5 +24,20 @@ class test_withInterop: XCTestCase {
 
   func testAnswer() {
     XCTAssertEqual(MD1TestClass2.answer(), "MD1TestClass2");
+  }
+
+  func testSwift() {
+    let foo = Foo()
+    XCTAssertNotNil(foo)
+  }
+
+  func testBridgingHeader() {
+    let test2 = MD1TestClass2()
+    XCTAssertNotNil(test2)
+  }
+
+  func testModule() {
+    let test = MD1TestClass()
+    XCTAssertNotNil(test)
   }
 }
