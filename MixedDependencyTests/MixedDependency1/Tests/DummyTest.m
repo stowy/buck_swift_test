@@ -38,4 +38,8 @@
   XCTAssertEqualObjects([MD1TestClass fooBar], @"Foo.bar");
 }
 
+// - (void)testFoo {
+//   XCTAssertNotNil([Foo new]);
+// }
+
 @end

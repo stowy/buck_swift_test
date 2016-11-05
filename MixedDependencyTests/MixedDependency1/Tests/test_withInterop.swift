@@ -15,7 +15,7 @@
  */
 
 import XCTest
-import MixedDependency1 
+import MixedDependency1
 
 class test_withInterop: XCTestCase {
   func testEcho() {
