@@ -12,4 +12,8 @@
   return [foo bar];
 }
 
++ (void)testSwift {
+  [Test1 func1:@"Testing"];
+}
+
 @end

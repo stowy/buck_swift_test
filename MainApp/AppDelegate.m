@@ -2,7 +2,6 @@
 #import <MainBinary-Swift.h>
 #import <UIKit/UIKit.h>
 
-
 #import "ObjcDependency1/ObjcDep1.h"
 #import <MixedDependency1/MD1TestClass.h>
 #import <MixedDependency2/MixedDep2.h>

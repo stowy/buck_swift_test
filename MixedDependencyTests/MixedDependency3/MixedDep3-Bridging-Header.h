@@ -1,3 +1,3 @@
 
 
-#import "MixedDependency3/MD3TestClass2.h"
+#import "Classes/MD3TestClass2.h"
